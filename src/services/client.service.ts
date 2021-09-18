@@ -2,7 +2,11 @@ import { CreateClientDto } from '~/dtos/clients.dto';
 import { IClient } from '~/interfaces/client.interface';
 import { isEmpty } from 'lodash';
 import HttpException from '~/exceptions/HttpException';
-import { createClient, findClient } from '~/data-layer/client.data-layer';
+import {
+	createClient,
+	deleteOneClient,
+	findClient,
+} from '~/data-layer/client.data-layer';
 
 class clientService {
 	public async createClient(
@@ -23,6 +27,12 @@ class clientService {
 
 	public async findClients(uid: string): Promise<IClient[]> {
 		return findClient({ args: { user: uid } });
+	}
+
+	public async deleteClient(id: string, uid: string): Promise<Boolean> {
+		await deleteOneClient({ args: { _id: id, user: uid } });
+
+		return true;
 	}
 }
 

@@ -5,7 +5,7 @@ import authenticate from '~/middlewares/auth.middleware';
 import { CreateClientDto } from '~/dtos/clients.dto';
 import ClientController from '~/controllers/client.controller';
 
-class clientRoute implements Route {
+class ClientRoute implements Route {
 	public path = '/client';
 	public router = Router();
 	public clientController = new ClientController();
@@ -17,7 +17,7 @@ class clientRoute implements Route {
 	private initializeRoutes() {
 		/**
 		 * @swagger
-		 * /client:
+		 * /Client:
 		 *   produces:
 		 *   - application/json
 		 */
@@ -27,7 +27,7 @@ class clientRoute implements Route {
 		 * /client:
 		 *  get:
 		 *   tags:
-		 *    - client
+		 *    - Client
 		 *   description: get all clients
 		 *   responses:
 		 *    200:
@@ -39,7 +39,7 @@ class clientRoute implements Route {
 		 * /client:
 		 *  post:
 		 *    tags:
-		 *     - client
+		 *     - Client
 		 *    description: create a new client
 		 *    parameters:
 		 *    - name: name
@@ -54,6 +54,24 @@ class clientRoute implements Route {
 		 *       description: not all data is given
 		 */
 
+		/**
+		 * @swagger
+		 * /client/{id}:
+		 *  delete:
+		 *    tags:
+		 *     - Client
+		 *    description: delete a client
+		 *    parameters:
+		 *    - name: id
+		 *      in: params
+		 *      type: string
+		 *      required: true
+		 *      description: id of client
+		 *    responses:
+		 *     201:
+		 *       description: client deleted
+		 */
+
 		this.router.get(
 			`${this.path}`,
 			authenticate,
@@ -65,7 +83,12 @@ class clientRoute implements Route {
 			authenticate,
 			this.clientController.createClient
 		);
+		this.router.delete(
+			`${this.path}/:id`,
+			authenticate,
+			this.clientController.deleteClient
+		);
 	}
 }
 
-export default clientRoute;
+export default ClientRoute;
