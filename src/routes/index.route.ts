@@ -57,7 +57,7 @@ class IndexRoute implements Route {
 			res.status(200).json({ message: 'You have reached' });
 		});
 		this.router.post(
-			`${this.path}/register`,
+			`${this.path}register`,
 			authMiddleware,
 			this.indexController.registerDeviceToken
 		);
