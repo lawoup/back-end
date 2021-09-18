@@ -32,6 +32,14 @@ class UserService {
 			},
 		});
 	}
+
+	public async getUserById(uid: string): Promise<IUser | null> {
+		return findOneUser({
+			args: {
+				_id: uid,
+			},
+		});
+	}
 }
 
 export default UserService;

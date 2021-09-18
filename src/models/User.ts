@@ -3,6 +3,7 @@ import { IUser } from '~/interfaces/user.interface';
 
 const userSchema = new mongoose.Schema(
 	{
+		_id: String,
 		name: String,
 		designation: String,
 		email: String,

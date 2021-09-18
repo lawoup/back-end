@@ -21,6 +21,18 @@ class UserController {
 			next(error);
 		}
 	};
+
+	public getUser = async (req: Request, res: Response, next: NextFunction) => {
+		const { uid } = req.user;
+
+		try {
+			const user = await this.userService.getUserById(uid);
+
+			res.status(200).json({ data: user, message: 'getUser' });
+		} catch (error) {
+			next(error);
+		}
+	};
 }
 
 export default UserController;

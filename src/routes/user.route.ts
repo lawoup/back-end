@@ -25,6 +25,18 @@ class UserRoute implements Route {
 		/**
 		 * @swagger
 		 * /user:
+		 *  get:
+		 *   tags:
+		 *    - User
+		 *   description: get a user
+		 *   responses:
+		 *    200:
+		 *      description: fetch a single user based on token
+		 */
+
+		/**
+		 * @swagger
+		 * /user:
 		 *  post:
 		 *    tags:
 		 *     - User
@@ -47,6 +59,7 @@ class UserRoute implements Route {
 		 *       description: not all data is given
 		 */
 
+		this.router.get(`${this.path}`, authenticate, this.userController.getUser);
 		this.router.post(
 			`${this.path}`,
 			validationMiddleware(CreateUserDto),
