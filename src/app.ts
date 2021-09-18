@@ -3,13 +3,25 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
+import * as admin from 'firebase-admin';
 import swaggerJSDoc, { SwaggerDefinition } from 'swagger-jsdoc';
 import swaggerUI, { SwaggerOptions } from 'swagger-ui-express';
 import { __PROD__ } from '~/constants';
-// import { User } from '~/models/User';
 import Routes from '~/interfaces/routes.interface';
 import errorMiddleware from '~/middlewares/error.middleware';
+import { auth } from 'firebase-admin';
+
+declare global {
+	namespace Express {
+		import DecodedIdToken = auth.DecodedIdToken;
+
+		interface Request {
+			user: DecodedIdToken;
+		}
+	}
+}
 
 class App {
 	public app: express.Application;
@@ -26,6 +38,7 @@ class App {
 		this.initializeSwagger();
 		this.initializeRoutes(routes);
 		this.initializeErrorHandling();
+		this.initializeNotifications();
 	}
 
 	public listen() {
@@ -38,7 +51,30 @@ class App {
 		return this.app;
 	}
 
-	private connectToDatabase() {}
+	private connectToDatabase() {
+		const { MONGO_PATH, NODE_ENV } = process.env;
+
+		try {
+			if (NODE_ENV === 'production') {
+				mongoose
+					.connect(`${MONGO_PATH}`)
+					.then(() => console.log('Database connected.'))
+					.catch((err) => {
+						console.error(err);
+					});
+			} else if (NODE_ENV === 'staging') {
+				mongoose
+					.connect(`${MONGO_PATH}`)
+					.then(() => console.log('Staging database connected.'));
+			} else {
+				mongoose
+					.connect(`${MONGO_PATH}`)
+					.then(() => console.log('Local database connected.'));
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
 	private initializeMiddlewares() {
 		this.app.use(express.json());
@@ -77,6 +113,16 @@ class App {
 	private initializeErrorHandling() {
 		this.app.use(errorMiddleware);
 	}
+
+	private initializeNotifications = () => {
+		admin.initializeApp({
+			credential: admin.credential.cert({
+				projectId: process.env.FIREBASE_PROJECT_ID,
+				privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+				clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+			}),
+		});
+	};
 
 	private initializeSwagger() {
 		const swaggerDefinition: SwaggerDefinition = {
