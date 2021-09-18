@@ -10,11 +10,12 @@ import {
 	findTask,
 } from '~/data-layer/task.data-layer';
 import dayjs from 'dayjs';
-import { findOneUser } from '~/data-layer/user.data-layer';
+import { findOneUser, findUserAndUpdate } from '~/data-layer/user.data-layer';
 import { MONTH } from '~/utils/fetchMonth';
 import { IRole } from '~/interfaces/role.interface';
 import { IClient } from '~/interfaces/client.interface';
 import { IProject } from '~/interfaces/project.interface';
+import { FileInfoInterface } from '~/interfaces/file-info.interface';
 
 class TaskService {
 	public async createTask(
@@ -106,7 +107,7 @@ class TaskService {
 				width: 10000,
 				height: 20000,
 				firstSheet: 0,
-				activeTab: 1,
+				activeTab: 0,
 				visibility: 'visible',
 			},
 		];
@@ -151,9 +152,28 @@ class TaskService {
 			});
 		});
 
-		await workBook.xlsx.writeFile(`./src/assets/${user.name}.xlsx`);
+		const path = `./src/assets/${uid}-${user.name}.xlsx`;
+		await workBook.xlsx.writeFile(path);
+
+		await findUserAndUpdate({
+			args: { _id: uid },
+			updateArgs: { filePath: path },
+		});
 
 		return true;
+	}
+
+	public async downloadExcel(uid: string): Promise<FileInfoInterface> {
+		const user = await findOneUser({ args: { _id: uid } });
+		if (!user) {
+			throw new HttpException(404, 'User not found');
+		}
+
+		if (!user.filePath) {
+			throw new HttpException(400, 'Please generate an excel first');
+		}
+
+		return { path: user.filePath, name: user.filePath.split('-')[1] };
 	}
 }
 

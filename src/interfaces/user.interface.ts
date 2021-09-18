@@ -3,6 +3,7 @@ export interface IUser {
 	name: string;
 	email: string;
 	designation: string;
+	filePath?: string;
 	createdAt?: Date;
 	updatedAt?: Date;
 }

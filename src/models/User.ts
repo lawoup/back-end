@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
 		name: String,
 		designation: String,
 		email: String,
+		filePath: String,
 	},
 	{
 		timestamps: true,

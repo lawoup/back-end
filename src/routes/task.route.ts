@@ -120,6 +120,11 @@ class TaskRoute implements Route {
 			authenticate,
 			this.taskController.generateExcel
 		);
+		this.router.get(
+			`${this.path}/download`,
+			authenticate,
+			this.taskController.downloadExcel
+		);
 	}
 }
 

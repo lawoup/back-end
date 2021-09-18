@@ -70,6 +70,22 @@ class TaskController {
 			next(error);
 		}
 	};
+
+	public downloadExcel = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		const { uid } = req.user;
+
+		try {
+			const { path, name } = await this.taskService.downloadExcel(uid);
+
+			res.download(path, name);
+		} catch (error) {
+			next(error);
+		}
+	};
 }
 
 export default TaskController;
