@@ -2,7 +2,11 @@ import { CreateProjectDto } from '~/dtos/projects.dto';
 import { IProject } from '~/interfaces/project.interface';
 import { isEmpty } from 'lodash';
 import HttpException from '~/exceptions/HttpException';
-import { createProject, findProject } from '~/data-layer/project.data-layer';
+import {
+	createProject,
+	deleteOneProject,
+	findProject,
+} from '~/data-layer/project.data-layer';
 
 class ProjectService {
 	public async createProject(
@@ -23,6 +27,12 @@ class ProjectService {
 
 	public async findProjects(uid: string): Promise<IProject[]> {
 		return findProject({ args: { user: uid } });
+	}
+
+	public async deleteProject(id: string, uid: string): Promise<Boolean> {
+		await deleteOneProject({ args: { _id: id, user: uid } });
+
+		return true;
 	}
 }
 

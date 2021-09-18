@@ -54,6 +54,24 @@ class ProjectRoute implements Route {
 		 *       description: not all data is given
 		 */
 
+		/**
+		 * @swagger
+		 * /project/{id}:
+		 *  delete:
+		 *    tags:
+		 *     - Project
+		 *    description: delete a project
+		 *    parameters:
+		 *    - name: id
+		 *      in: params
+		 *      type: string
+		 *      required: true
+		 *      description: id of project
+		 *    responses:
+		 *     201:
+		 *       description: project deleted
+		 */
+
 		this.router.get(
 			`${this.path}`,
 			authenticate,
@@ -64,6 +82,11 @@ class ProjectRoute implements Route {
 			validationMiddleware(CreateProjectDto),
 			authenticate,
 			this.projectController.createProject
+		);
+		this.router.delete(
+			`${this.path}/:id`,
+			authenticate,
+			this.projectController.deleteProject
 		);
 	}
 }

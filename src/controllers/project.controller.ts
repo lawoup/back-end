@@ -37,6 +37,23 @@ class ProjectController {
 			next(error);
 		}
 	};
+
+	public deleteProject = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		const id = req.params.id as string;
+		const { uid } = req.user;
+
+		try {
+			const result = await this.projectService.deleteProject(id, uid);
+
+			res.status(200).json({ data: result, message: 'deleteProject' });
+		} catch (error) {
+			next(error);
+		}
+	};
 }
 
 export default ProjectController;
