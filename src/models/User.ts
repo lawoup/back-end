@@ -1,23 +1,17 @@
-import {
-	BaseEntity,
-	Column,
-	CreateDateColumn,
-	Entity,
-	PrimaryGeneratedColumn,
-	UpdateDateColumn,
-} from 'typeorm';
+import mongoose from 'mongoose';
+import { IUser } from '~/interfaces/user.interface';
 
-@Entity()
-export class User extends BaseEntity {
-	@PrimaryGeneratedColumn()
-	id: number;
+const userSchema = new mongoose.Schema(
+	{
+		name: String,
+		designation: String,
+		email: String,
+	},
+	{
+		timestamps: true,
+	}
+);
 
-	@Column('text')
-	email: string;
+const userModel = mongoose.model<IUser & mongoose.Document>('User', userSchema);
 
-	@CreateDateColumn()
-	createdAt: Date;
-
-	@UpdateDateColumn()
-	updatedAt: Date;
-}
+export default userModel;
