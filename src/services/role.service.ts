@@ -1,6 +1,10 @@
 import { isEmpty } from 'lodash';
 import HttpException from '~/exceptions/HttpException';
-import { createRole, findRole } from '~/data-layer/role.data-layer';
+import {
+	createRole,
+	deleteOneRole,
+	findRole,
+} from '~/data-layer/role.data-layer';
 import { CreateRoleDto } from '~/dtos/roles.dto';
 import { IRole } from '~/interfaces/role.interface';
 
@@ -23,6 +27,12 @@ class RoleService {
 
 	public async findRoles(uid: string): Promise<IRole[]> {
 		return findRole({ args: { user: uid } });
+	}
+
+	public async deleteRole(id: string, uid: string): Promise<Boolean> {
+		await deleteOneRole({ args: { _id: id, user: uid } });
+
+		return true;
 	}
 }
 

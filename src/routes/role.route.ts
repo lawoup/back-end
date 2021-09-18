@@ -17,7 +17,7 @@ class RoleRoute implements Route {
 	private initializeRoutes() {
 		/**
 		 * @swagger
-		 * /role:
+		 * /Role:
 		 *   produces:
 		 *   - application/json
 		 */
@@ -27,7 +27,7 @@ class RoleRoute implements Route {
 		 * /role:
 		 *  get:
 		 *   tags:
-		 *    - role
+		 *    - Role
 		 *   description: get all roles
 		 *   responses:
 		 *    200:
@@ -39,7 +39,7 @@ class RoleRoute implements Route {
 		 * /role:
 		 *  post:
 		 *    tags:
-		 *     - role
+		 *     - Role
 		 *    description: create a new role
 		 *    parameters:
 		 *    - name: name
@@ -54,6 +54,24 @@ class RoleRoute implements Route {
 		 *       description: not all data is given
 		 */
 
+		/**
+		 * @swagger
+		 * /role/{id}:
+		 *  delete:
+		 *    tags:
+		 *     - Role
+		 *    description: delete a role
+		 *    parameters:
+		 *    - name: id
+		 *      in: params
+		 *      type: string
+		 *      required: true
+		 *      description: id of role
+		 *    responses:
+		 *     201:
+		 *       description: role deleted
+		 */
+
 		this.router.get(
 			`${this.path}`,
 			authenticate,
@@ -64,6 +82,11 @@ class RoleRoute implements Route {
 			validationMiddleware(CreateRoleDto),
 			authenticate,
 			this.roleController.createRole
+		);
+		this.router.delete(
+			`${this.path}/:id`,
+			authenticate,
+			this.roleController.deleteRole
 		);
 	}
 }

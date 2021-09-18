@@ -37,6 +37,23 @@ class RoleController {
 			next(error);
 		}
 	};
+
+	public deleteRole = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		const id = req.params.id as string;
+		const { uid } = req.user;
+
+		try {
+			const result = await this.roleService.deleteRole(id, uid);
+
+			res.status(200).json({ data: result, message: 'deleteRole' });
+		} catch (error) {
+			next(error);
+		}
+	};
 }
 
 export default RoleController;
