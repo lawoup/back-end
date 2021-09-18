@@ -54,6 +54,22 @@ class TaskController {
 			next(error);
 		}
 	};
+
+	public generateExcel = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		const { uid } = req.user;
+
+		try {
+			const result = await this.taskService.generateExcel(uid);
+
+			res.status(200).json({ data: result, message: 'generateExcel' });
+		} catch (error) {
+			next(error);
+		}
+	};
 }
 
 export default TaskController;

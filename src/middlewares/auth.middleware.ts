@@ -9,9 +9,7 @@ async function authenticate(req: Request, _res: Response, next: NextFunction) {
 			next(new HttpException(404, 'Authentication token missing'));
 		}
 
-		req.user =  await admin
-			.auth()
-			.verifyIdToken(token);
+		req.user = await admin.auth().verifyIdToken(token);
 		next();
 	} catch (error) {
 		console.log(error);

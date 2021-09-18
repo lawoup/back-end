@@ -87,6 +87,18 @@ class TaskRoute implements Route {
 		 *       description: task deleted
 		 */
 
+		/**
+		 * @swagger
+		 * /task/generate:
+		 *  post:
+		 *    tags:
+		 *     - Task
+		 *    description: generate a task excel file
+		 *    responses:
+		 *     200:
+		 *       description: Excel generated and saved
+		 */
+
 		this.router.get(
 			`${this.path}`,
 			authenticate,
@@ -102,6 +114,11 @@ class TaskRoute implements Route {
 			`${this.path}/:id`,
 			authenticate,
 			this.taskController.deleteTask
+		);
+		this.router.post(
+			`${this.path}/generate`,
+			authenticate,
+			this.taskController.generateExcel
 		);
 	}
 }

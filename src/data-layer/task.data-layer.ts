@@ -1,6 +1,7 @@
 import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import { ITask } from '~/interfaces/task.interface';
 import Task from '~/models/Task';
+import { PopulateObjectInterface } from '~/interfaces/populate-object.interface';
 
 const createTask = ({ args = {} }: { args: any }): Promise<ITask> => {
 	return Task.create(args).then((result) => result.save());
@@ -9,11 +10,13 @@ const createTask = ({ args = {} }: { args: any }): Promise<ITask> => {
 const findTask = ({
 	args = {},
 	sortArgs = { createdAt: -1 },
+	populateArgs = [],
 }: {
 	args?: FilterQuery<ITask & mongoose.Document>;
 	sortArgs?: object;
+	populateArgs?: PopulateObjectInterface[];
 }) => {
-	return Task.find(args).sort(sortArgs);
+	return Task.find(args).populate(populateArgs).sort(sortArgs);
 };
 
 const deleteOneTask = ({
