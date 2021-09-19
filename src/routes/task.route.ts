@@ -99,6 +99,18 @@ class TaskRoute implements Route {
 		 *       description: Excel generated and saved
 		 */
 
+		/**
+		 * @swagger
+		 * /task/download:
+		 *  get:
+		 *    tags:
+		 *     - Task
+		 *    description: download a task excel file
+		 *    responses:
+		 *     200:
+		 *       description: Excel can be downloaded
+		 */
+
 		this.router.get(
 			`${this.path}`,
 			authenticate,
