@@ -43,10 +43,12 @@ const findTaskAndUpdate = ({
 
 const findOneTask = ({
 	args = {},
+	sortArgs = { createdAt: -1 },
 }: {
 	args: FilterQuery<ITask & mongoose.Document>;
+	sortArgs?: object;
 }) => {
-	return Task.findOne(args);
+	return Task.findOne(args).sort(sortArgs);
 };
 
 export {

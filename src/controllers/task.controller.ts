@@ -86,6 +86,22 @@ class TaskController {
 			next(error);
 		}
 	};
+
+	public usePreviousTemplate = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		const { uid } = req.user;
+
+		try {
+			const result = await this.taskService.usePreviousTemplate(uid);
+
+			res.status(200).json({ data: result, message: 'usePreviousTemplate' });
+		} catch (error) {
+			next(error);
+		}
+	};
 }
 
 export default TaskController;

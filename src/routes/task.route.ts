@@ -137,6 +137,11 @@ class TaskRoute implements Route {
 			authenticate,
 			this.taskController.downloadExcel
 		);
+		this.router.get(
+			`${this.path}/previous-template`,
+			authenticate,
+			this.taskController.usePreviousTemplate
+		);
 	}
 }
 

@@ -7,6 +7,7 @@ import HttpException from '~/exceptions/HttpException';
 import {
 	createTask,
 	deleteOneTask,
+	findOneTask,
 	findTask,
 } from '~/data-layer/task.data-layer';
 import dayjs from 'dayjs';
@@ -174,6 +175,26 @@ class TaskService {
 		}
 
 		return { path: user.filePath, name: user.filePath.split('-')[1] };
+	}
+
+	public async usePreviousTemplate(uid: string): Promise<ITask[]> {
+		const lastTask = await findOneTask({
+			args: {
+				user: uid,
+			},
+		});
+		if (!lastTask) {
+			return [];
+		}
+
+		return findTask({
+			args: {
+				user: uid,
+				date: lastTask.date,
+				month: lastTask.month,
+				year: lastTask.year,
+			},
+		});
 	}
 }
 
