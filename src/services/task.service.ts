@@ -1,4 +1,5 @@
 import { Workbook } from 'exceljs';
+import * as AWS from 'aws-sdk';
 
 import { CreateTaskDto } from '~/dtos/tasks.dto';
 import { ITask } from '~/interfaces/task.interface';
@@ -17,6 +18,7 @@ import { IRole } from '~/interfaces/role.interface';
 import { IClient } from '~/interfaces/client.interface';
 import { IProject } from '~/interfaces/project.interface';
 import { FileInfoInterface } from '~/interfaces/file-info.interface';
+import { Stream } from 'stream';
 
 class TaskService {
 	public async createTask(
@@ -153,12 +155,24 @@ class TaskService {
 			});
 		});
 
-		const path = `./src/assets/${uid}-${user.name}.xlsx`;
-		await workBook.xlsx.writeFile(path);
+		const stream = new Stream.PassThrough();
+		await workBook.xlsx.write(stream);
+
+		let s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+
+		const result = await s3
+			.upload({
+				Key: `${uid}-${user.name}.xlsx`,
+				Bucket: process.env.S3_BUCKET! as string,
+				Body: stream,
+				ContentType:
+					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			})
+			.promise();
 
 		await findUserAndUpdate({
 			args: { _id: uid },
-			updateArgs: { filePath: path },
+			updateArgs: { filePath: result.Location },
 		});
 
 		return true;
