@@ -1,4 +1,4 @@
-# npm run build
+npm run build
 tar -czvf dist.tar.gz ./dist
 sftp -i /home/ntpl-297/Documents/Project-Docs/mentorship/techclub.pem ubuntu@ec2-65-2-129-210.ap-south-1.compute.amazonaws.com << !
  cd lawoup/backend
