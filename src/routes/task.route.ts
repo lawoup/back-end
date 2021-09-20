@@ -52,6 +52,11 @@ class TaskRoute implements Route {
 		 *      type: string
 		 *      required: true
 		 *      description: project name
+		 *    - name: client
+		 *      in: body
+		 *      type: string
+		 *      required: true
+		 *      description: client name
 		 *    - name: taskDate
 		 *      in: body
 		 *      type: date
@@ -109,6 +114,18 @@ class TaskRoute implements Route {
 		 *    responses:
 		 *     200:
 		 *       description: Excel can be downloaded
+		 */
+
+		/**
+		 * @swagger
+		 * /task/previous-template:
+		 *  get:
+		 *    tags:
+		 *     - Task
+		 *    description: get previous template
+		 *    responses:
+		 *     200:
+		 *       description: an array of tasks of previous day
 		 */
 
 		this.router.get(
