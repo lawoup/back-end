@@ -1,4 +1,5 @@
 import { Workbook } from 'exceljs';
+import * as admin from 'firebase-admin';
 
 import { CreateTaskDto } from '~/dtos/tasks.dto';
 import { ITask } from '~/interfaces/task.interface';
@@ -112,6 +113,30 @@ class TaskService {
 				visibility: 'visible',
 			},
 		];
+
+		const sheet = workBook.addWorksheet(`Employee information`, {
+			pageSetup: { paperSize: 9, orientation: 'landscape' },
+			properties: {
+				defaultColWidth: 20,
+			},
+		});
+
+		sheet.addTable({
+			name: `Employee info`,
+			ref: 'D4',
+			headerRow: true,
+			style: {
+				theme: 'TableStyleDark3',
+				showRowStripes: true,
+			},
+			columns: [
+				{ name: 'Company Name' },
+				{ name: 'Employee Name' },
+				{ name: 'Employee Designation' },
+			],
+			rows: [['Neoito Technologies Pvt. Ltd.', user.name, user.designation]],
+		});
+
 		Object.keys(yearAndMonthFormattedTasks).forEach((year) => {
 			Object.keys(yearAndMonthFormattedTasks[year]).forEach((month) => {
 				const tasks = yearAndMonthFormattedTasks[year][month];
@@ -154,7 +179,14 @@ class TaskService {
 		});
 
 		const path = `./src/assets/${uid}-${user.name}.xlsx`;
-		await workBook.xlsx.writeFile(path);
+
+		const fileStream = await admin
+			.storage()
+			.bucket('tasks')
+			.file(`${uid}-${user.name}.xlsx`)
+			.createWriteStream();
+
+		await workBook.xlsx.write(fileStream);
 
 		await findUserAndUpdate({
 			args: { _id: uid },

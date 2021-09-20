@@ -9,6 +9,7 @@ function validateEnv() {
 		FIREBASE_PROJECT_ID: str(),
 		FIREBASE_PRIVATE_KEY: str(),
 		FIREBASE_CLIENT_EMAIL: str(),
+		FIREBASE_STORAGE_BUCKET: str(),
 	});
 }
 
