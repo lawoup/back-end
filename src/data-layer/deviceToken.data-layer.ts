@@ -1,6 +1,6 @@
 import { IDeviceToken } from '~/interfaces/device-token.interface';
 import DeviceToken from '~/models/DeviceToken';
-import mongoose, { FilterQuery } from 'mongoose';
+import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 
 const createDeviceToken = ({
 	args = {},
@@ -30,4 +30,19 @@ const findOneDeviceToken = ({
 	return DeviceToken.findOne(args);
 };
 
-export { createDeviceToken, findDeviceToken, findOneDeviceToken };
+const updateManyDeviceToken = ({
+	args = {},
+	updateArgs = {},
+}: {
+	args: FilterQuery<IDeviceToken & mongoose.Document>;
+	updateArgs: UpdateQuery<IDeviceToken>;
+}) => {
+	return DeviceToken.updateMany(args, updateArgs, { upsert: true });
+};
+
+export {
+	createDeviceToken,
+	findDeviceToken,
+	findOneDeviceToken,
+	updateManyDeviceToken,
+};
