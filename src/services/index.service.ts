@@ -8,7 +8,7 @@ class IndexService {
 		}
 
 		return updateManyDeviceToken({
-			args: { user: uid },
+			args: { user: uid, token },
 			updateArgs: { token },
 		});
 	}
