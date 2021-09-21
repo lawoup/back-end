@@ -127,7 +127,7 @@ class App {
 	private initializeSwagger() {
 		const swaggerDefinition: SwaggerDefinition = {
 			basePath: '/',
-			host: 'http://localhost:3000',
+			host: 'http://localhost:8080',
 			info: {
 				title: 'REST API NEXTPORT',
 				version: '1.0.0',
