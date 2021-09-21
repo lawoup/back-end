@@ -7,6 +7,10 @@ const createTask = ({ args = {} }: { args: any }): Promise<ITask> => {
 	return Task.create(args).then((result) => result.save());
 };
 
+const createManyTask = ({ args = [] }: { args: any }): Promise<ITask[]> => {
+	return Task.insertMany(args);
+};
+
 const findTask = ({
 	args = {},
 	sortArgs = { createdAt: -1 },
@@ -58,4 +62,5 @@ export {
 	deleteOneTask,
 	findOneTask,
 	findTaskById,
+	createManyTask,
 };

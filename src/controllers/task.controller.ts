@@ -10,11 +10,11 @@ class TaskController {
 		res: Response,
 		next: NextFunction
 	) => {
-		const TaskData: CreateTaskDto = req.body;
+		const taskData: CreateTaskDto = req.body;
 		const { uid } = req.user;
 
 		try {
-			const task = await this.taskService.createTask(TaskData, uid);
+			const task = await this.taskService.createTask(taskData, uid);
 
 			res.status(201).json({ data: task, message: 'taskCreated' });
 		} catch (error) {

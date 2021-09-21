@@ -6,7 +6,7 @@ import { ITask } from '~/interfaces/task.interface';
 import { isEmpty } from 'lodash';
 import HttpException from '~/exceptions/HttpException';
 import {
-	createTask,
+	createManyTask,
 	deleteOneTask,
 	findOneTask,
 	findTask,
@@ -24,33 +24,38 @@ class TaskService {
 	public async createTask(
 		taskData: CreateTaskDto,
 		uid: string
-	): Promise<ITask> {
+	): Promise<ITask[]> {
 		if (isEmpty(taskData)) {
 			throw new HttpException(400, 'No valid task data found');
 		}
 
-		if (taskData.duration > 12) {
-			throw new HttpException(400, 'You should probably get a life!');
-		}
+		let insertTaskData = [];
+		for (let i = 0; i < taskData.tasks.length; i++) {
+			let task = taskData.tasks[i];
 
-		const date = dayjs(taskData.taskDate).date();
-		const month = dayjs(taskData.taskDate).month();
-		const year = dayjs(taskData.taskDate).year();
+			if (task.duration > 12) {
+				throw new HttpException(400, 'You should probably get a life!');
+			}
 
-		return createTask({
-			args: {
+			const date = dayjs(task.taskDate).date();
+			const month = dayjs(task.taskDate).month();
+			const year = dayjs(task.taskDate).year();
+
+			insertTaskData.push({
 				user: uid,
-				role: taskData.role,
-				client: taskData.client,
-				project: taskData.project,
-				taskDate: taskData.taskDate,
-				description: taskData.description,
-				duration: taskData.duration,
+				role: task.role,
+				client: task.client,
+				project: task.project,
+				taskDate: task.taskDate,
+				description: task.description,
+				duration: task.duration,
 				date,
 				month,
 				year,
-			},
-		});
+			});
+		}
+
+		return createManyTask({ args: insertTaskData });
 	}
 
 	public async findTasks(uid: string): Promise<ITask[]> {

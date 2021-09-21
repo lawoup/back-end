@@ -1,6 +1,7 @@
 import { IsDateString, IsNumber, IsString } from 'class-validator';
+import { IsValidTask } from '~/utils/valid-task.validation';
 
-export class CreateTaskDto {
+export class TaskDto {
 	@IsString()
 	public role: string;
 
@@ -18,4 +19,9 @@ export class CreateTaskDto {
 
 	@IsNumber()
 	public duration: number;
+}
+
+export class CreateTaskDto {
+	@IsValidTask({ message: 'Incomplete task data' })
+	public tasks: TaskDto[];
 }
