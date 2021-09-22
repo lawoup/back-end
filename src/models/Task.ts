@@ -8,16 +8,31 @@ const taskSchema = new mongoose.Schema(
 			ref: 'User',
 		},
 		client: {
-			type: String,
-			ref: 'Client',
+			_id: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Client',
+			},
+			name: {
+				type: String,
+			},
 		},
 		role: {
-			type: String,
-			ref: 'Role',
+			_id: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Role',
+			},
+			name: {
+				type: String,
+			},
 		},
 		project: {
-			type: String,
-			ref: 'Project',
+			_id: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Project',
+			},
+			name: {
+				type: String,
+			},
 		},
 		taskDate: Date,
 		description: String,

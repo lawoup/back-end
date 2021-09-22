@@ -12,9 +12,17 @@ export function IsValidTask(validationOptions?: ValidationOptions) {
 					let flag = true;
 					for (let i = 0; i < value.length; i++) {
 						if (
-							!value[i].role ||
-							!value[i].project ||
-							!value[i].client ||
+							!(value[i].role && value[i].role._id && value[i].role.name) ||
+							!(
+								value[i].project &&
+								value[i].project._id &&
+								value[i].project.name
+							) ||
+							!(
+								value[i].client &&
+								value[i].client._id &&
+								value[i].client.name
+							) ||
 							!value[i].taskDate ||
 							!value[i].description ||
 							!value[i].duration

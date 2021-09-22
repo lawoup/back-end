@@ -6,9 +6,18 @@ import { IClient } from '~/interfaces/client.interface';
 export interface ITask {
 	_id: string;
 	user: string | IUser;
-	role: string | IRole;
-	client: string | IClient;
-	project: string | IProject;
+	role: {
+		_id: string | IRole;
+		name: string;
+	};
+	client: {
+		_id: string | IClient;
+		name: string;
+	};
+	project: {
+		_id: string | IProject;
+		name: string;
+	};
 	taskDate: Date;
 	description: string;
 	date: number;

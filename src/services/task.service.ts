@@ -19,6 +19,9 @@ import { IClient } from '~/interfaces/client.interface';
 import { IProject } from '~/interfaces/project.interface';
 import { FileInfoInterface } from '~/interfaces/file-info.interface';
 import { Stream } from 'stream';
+import { createClient, findOneClient } from '~/data-layer/client.data-layer';
+import { createRole, findOneRole } from '~/data-layer/role.data-layer';
+import { createProject, findOneProject } from '~/data-layer/project.data-layer';
 
 class TaskService {
 	public async createTask(
@@ -41,11 +44,53 @@ class TaskService {
 			const month = dayjs(task.taskDate).month();
 			const year = dayjs(task.taskDate).year();
 
+			const client = await findOneClient({
+				args: { _id: task.client._id, user: uid },
+			});
+			let clientId = task.client._id;
+			if (!client) {
+				const newClient = await createClient({
+					args: { name: task.client.name, user: uid },
+				});
+				clientId = newClient._id;
+			}
+
+			const role = await findOneRole({
+				args: { _id: task.role._id, user: uid },
+			});
+			let roleId = task.role._id;
+			if (!role) {
+				const newRole = await createRole({
+					args: { name: task.role.name, user: uid },
+				});
+				roleId = newRole._id;
+			}
+
+			const project = await findOneProject({
+				args: { _id: task.project._id, user: uid },
+			});
+			let projectId = task.project._id;
+			if (!project) {
+				const newProject = await createProject({
+					args: { name: task.project.name, user: uid },
+				});
+				projectId = newProject._id;
+			}
+
 			insertTaskData.push({
 				user: uid,
-				role: task.role,
-				client: task.client,
-				project: task.project,
+				role: {
+					_id: roleId,
+					name: task.role.name,
+				},
+				client: {
+					_id: clientId,
+					name: task.client.name,
+				},
+				project: {
+					_id: projectId,
+					name: task.project.name,
+				},
 				taskDate: task.taskDate,
 				description: task.description,
 				duration: task.duration,
@@ -59,7 +104,9 @@ class TaskService {
 	}
 
 	public async findTasks(uid: string): Promise<ITask[]> {
-		return findTask({ args: { user: uid } });
+		return findTask({
+			args: { user: uid },
+		});
 	}
 
 	public async deleteTask(id: string, uid: string): Promise<Boolean> {
