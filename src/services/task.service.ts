@@ -142,7 +142,6 @@ class TaskService {
 					ref: 'A1',
 					headerRow: true,
 					style: {
-						theme: 'TableStyleDark3',
 						showRowStripes: true,
 					},
 					columns: [
