@@ -81,7 +81,7 @@ class TaskController {
 		try {
 			const { path, name } = await this.taskService.downloadExcel(uid);
 
-			res.download(path, name);
+			res.status(200).json({ data: { path, name }, message: 'downloadExcel' });
 		} catch (error) {
 			next(error);
 		}
