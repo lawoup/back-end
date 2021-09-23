@@ -49,10 +49,10 @@ class UserService {
 			},
 		});
 		if (!user) {
-			return { user: null, email_error: true };
+			return { user: null, email_error: false };
 		}
 		if (email.split('@')[1] === 'neoito.com') {
-			return { user: null, email_error: true };
+			return { user, email_error: true };
 		}
 
 		return { user, email_error: false };
