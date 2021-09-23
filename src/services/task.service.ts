@@ -118,7 +118,6 @@ class TaskService {
 	public async generateExcel(uid: string): Promise<Boolean> {
 		const tasks = await findTask({
 			args: { user: uid },
-			populateArgs: [{ path: 'role' }, { path: 'client' }, { path: 'project' }],
 		});
 
 		const user = await findOneUser({ args: { _id: uid } });
