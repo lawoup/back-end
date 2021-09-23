@@ -51,7 +51,7 @@ class UserService {
 		if (!user) {
 			return { user: null, email_error: false };
 		}
-		if (email.split('@')[1] === 'neoito.com') {
+		if (email.split('@')[1] !== 'neoito.com') {
 			return { user, email_error: true };
 		}
 
