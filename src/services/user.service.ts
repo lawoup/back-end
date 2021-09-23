@@ -4,6 +4,7 @@ import { CreateUserDto } from '~/dtos/users.dto';
 import { IUser } from '~/interfaces/user.interface';
 import HttpException from '~/exceptions/HttpException';
 import { createUser, findOneUser } from '~/data-layer/user.data-layer';
+import { UserOutputInterface } from '~/interfaces/user-output.interface';
 
 class UserService {
 	public async createUser(
@@ -38,12 +39,17 @@ class UserService {
 		});
 	}
 
-	public async getUserById(uid: string): Promise<IUser | null> {
-		return findOneUser({
+	public async getUserById(uid: string): Promise<UserOutputInterface> {
+		const user = await findOneUser({
 			args: {
 				_id: uid,
 			},
 		});
+		if (!user) {
+			return { user: null, email_error: true };
+		}
+
+		return { user, email_error: false };
 	}
 }
 
