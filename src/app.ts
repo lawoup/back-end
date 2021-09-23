@@ -14,12 +14,16 @@ import Routes from '~/interfaces/routes.interface';
 import errorMiddleware from '~/middlewares/error.middleware';
 import { auth } from 'firebase-admin';
 
+interface admin {
+	admin: boolean;
+}
+
 declare global {
 	namespace Express {
 		import DecodedIdToken = auth.DecodedIdToken;
 
 		interface Request {
-			user: DecodedIdToken;
+			user: DecodedIdToken & admin;
 		}
 	}
 }

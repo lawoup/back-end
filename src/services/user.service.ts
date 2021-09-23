@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import * as admin from 'firebase-admin';
 import { CreateUserDto } from '~/dtos/users.dto';
 import { IUser } from '~/interfaces/user.interface';
 import HttpException from '~/exceptions/HttpException';
@@ -21,6 +22,10 @@ class UserService {
 		});
 		if (user) {
 			throw new HttpException(409, 'Email already present');
+		}
+
+		if (email === process.env.ADMIN_EMAIL) {
+			await admin.auth().setCustomUserClaims(uid, { admin: true });
 		}
 
 		return await createUser({

@@ -11,5 +11,6 @@ declare namespace NodeJS {
     AWS_ACCESS_KEY_ID: string;
     AWS_SECRET_ACCESS_KEY: string;
     S3_BUCKET: string;
+    ADMIN_EMAIL: string;
   }
 }
