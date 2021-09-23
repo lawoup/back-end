@@ -39,13 +39,19 @@ class UserService {
 		});
 	}
 
-	public async getUserById(uid: string): Promise<UserOutputInterface> {
+	public async getUserById(
+		uid: string,
+		email: string
+	): Promise<UserOutputInterface> {
 		const user = await findOneUser({
 			args: {
 				_id: uid,
 			},
 		});
 		if (!user) {
+			return { user: null, email_error: true };
+		}
+		if (email.split('@')[1] === 'neoito.com') {
 			return { user: null, email_error: true };
 		}
 

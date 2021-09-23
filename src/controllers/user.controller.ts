@@ -23,10 +23,10 @@ class UserController {
 	};
 
 	public getUser = async (req: Request, res: Response, next: NextFunction) => {
-		const { uid } = req.user;
+		const { uid, email } = req.user;
 
 		try {
-			const user = await this.userService.getUserById(uid);
+			const user = await this.userService.getUserById(uid, email!);
 
 			res.status(200).json({ data: user, message: 'getUser' });
 		} catch (error) {
