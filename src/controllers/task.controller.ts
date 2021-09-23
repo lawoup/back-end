@@ -63,9 +63,9 @@ class TaskController {
 		const { uid } = req.user;
 
 		try {
-			const result = await this.taskService.generateExcel(uid);
+			const { path, name } = await this.taskService.generateExcel(uid);
 
-			res.status(200).json({ data: result, message: 'generateExcel' });
+			res.status(200).json({ data: { path, name }, message: 'generateExcel' });
 		} catch (error) {
 			next(error);
 		}
@@ -87,7 +87,7 @@ class TaskController {
 		}
 	};
 
-	public usePreviousTemplate = async (
+	public getPreviousTemplate = async (
 		req: Request,
 		res: Response,
 		next: NextFunction
@@ -95,7 +95,7 @@ class TaskController {
 		const { uid } = req.user;
 
 		try {
-			const result = await this.taskService.usePreviousTemplate(uid);
+			const result = await this.taskService.getPreviousTemplate(uid);
 
 			res.status(200).json({ data: result, message: 'usePreviousTemplate' });
 		} catch (error) {

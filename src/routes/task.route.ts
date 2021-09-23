@@ -157,7 +157,7 @@ class TaskRoute implements Route {
 		this.router.get(
 			`${this.path}/previous-template`,
 			authenticate,
-			this.taskController.usePreviousTemplate
+			this.taskController.getPreviousTemplate
 		);
 	}
 }

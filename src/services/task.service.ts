@@ -115,7 +115,7 @@ class TaskService {
 		return true;
 	}
 
-	public async generateExcel(uid: string): Promise<Boolean> {
+	public async generateExcel(uid: string): Promise<FileInfoInterface> {
 		const tasks = await findTask({
 			args: { user: uid },
 		});
@@ -225,7 +225,7 @@ class TaskService {
 			updateArgs: { filePath: result.Location },
 		});
 
-		return true;
+		return { path: result.Location, name: result.Location.split('-')[1] };
 	}
 
 	public async downloadExcel(uid: string): Promise<FileInfoInterface> {
@@ -241,7 +241,7 @@ class TaskService {
 		return { path: user.filePath, name: user.filePath.split('-')[1] };
 	}
 
-	public async usePreviousTemplate(uid: string): Promise<ITask[]> {
+	public async getPreviousTemplate(uid: string): Promise<ITask[]> {
 		const lastTask = await findOneTask({
 			args: {
 				user: uid,
